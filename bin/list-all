@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+GIT_REPO="https://github.com/superlistapp/flutter.git"
+git ls-remote --tags "$GIT_REPO" |
+  grep -o 'refs/tags/[^\^{}]*' |
+  sed 's|refs/tags/||'

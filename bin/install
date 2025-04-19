@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+version="$1"
+install_path="$2"
+
+# Clone your fork at the given version
+GIT_REPO="https://github.com/superlistapp/flutter.git"
+
+# If the version is a commit/tag/branch name
+git clone --depth 1 --branch "$version" "$GIT_REPO" "$install_path"

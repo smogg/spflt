@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+INSTALL_PATH="$1"
+echo "PATH=$INSTALL_PATH/bin:$PATH"
