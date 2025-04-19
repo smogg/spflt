@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eo pipefail # remove the 'u' for now
+set -eo pipefail
 
 version="${1:-}"
 install_path="${2:-}"
@@ -8,3 +8,6 @@ if [[ -z "$version" || -z "$install_path" ]]; then
   echo "Missing version or install_path"
   exit 1
 fi
+
+echo "Installing superflutter@$version into $install_path"
+git clone --depth 1 --branch "$version" https://github.com/superlistapp/flutter.git "$install_path"
