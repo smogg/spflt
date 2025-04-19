@@ -1,5 +1,16 @@
 #!/usr/bin/env bash
 GIT_REPO="https://github.com/superlistapp/flutter.git"
+
+echo "Available versions:"
+
+# Get tags
+echo "Tags:"
 git ls-remote --tags "$GIT_REPO" |
   grep -o 'refs/tags/[^\^{}]*' |
   sed 's|refs/tags/||'
+
+# Get branches
+echo "Branches:"
+git ls-remote --heads "$GIT_REPO" |
+  grep -o 'refs/heads/.*' |
+  sed 's|refs/heads/||'

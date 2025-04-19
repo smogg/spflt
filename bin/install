@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eo pipefail
+set -e
 
 version="${1:-}"
 install_path="${2:-}"
@@ -10,4 +10,17 @@ if [[ -z "$version" || -z "$install_path" ]]; then
 fi
 
 echo "Installing superflutter@$version into $install_path"
+
+# Try to clone with the specified branch or tag
 git clone --depth 1 --branch "$version" https://github.com/superlistapp/flutter.git "$install_path"
+clone_status=$?
+
+if [ $clone_status -ne 0 ]; then
+  echo "Error: Version '$version' not found as a branch or tag"
+  exit 1
+fi
+
+# Make the flutter binary executable if it exists
+if [[ -f "$install_path/bin/flutter" ]]; then
+  chmod +x "$install_path/bin/flutter"
+fi
