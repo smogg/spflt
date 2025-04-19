@@ -4,4 +4,5 @@ INSTALL_PATH="$1"
 # Set up the PATH environment variable to include the Flutter binary
 echo "PATH=$INSTALL_PATH/bin:$PATH"
 
-# Any other environment variables needed by Flutter/Superflutter
+# Tell Flutter we're using a custom repo
+echo "FLUTTER_GIT_URL=https://github.com/superlistapp/flutter.git"

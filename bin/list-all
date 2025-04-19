@@ -2,11 +2,5 @@
 set -e
 GIT_REPO="https://github.com/superlistapp/flutter.git"
 
-# Use a clean output approach - redirect stderr to /dev/null
-(
-  # Get tags (without ^ suffix)
-  git ls-remote --tags "$GIT_REPO" | grep -v '\^{}' | awk -F/ '{print $NF}'
-
-  # Get branches
-  git ls-remote --heads "$GIT_REPO" | awk -F/ '{print $NF}'
-) 2>/dev/null
+# Just show recent commits - keep it simple
+git ls-remote "$GIT_REPO" HEAD | cut -f1

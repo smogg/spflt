@@ -1,39 +1,29 @@
 #!/usr/bin/env bash
 set -e
 
-# In Mise using asdf plugins, these environment variables should be set
-# rather than using command line arguments
+# Get version and install path from environment variables
 version="$ASDF_INSTALL_VERSION"
 install_path="$ASDF_INSTALL_PATH"
 
-# We need both variables to proceed
+# Validate required parameters
 if [[ -z "$version" || -z "$install_path" ]]; then
   echo "Error: Required environment variables not set."
-  echo "ASDF_INSTALL_VERSION: $ASDF_INSTALL_VERSION"
-  echo "ASDF_INSTALL_PATH: $ASDF_INSTALL_PATH"
   exit 1
 fi
 
 echo "Installing superflutter@$version into $install_path"
 
-# Create install directory if needed (but don't overwrite)
+# Create install directory if needed
 mkdir -p "$install_path"
 
-# Clone the repository with the specified branch or tag, and fetch enough history
-git clone --branch "$version" https://github.com/superlistapp/flutter.git "$install_path"
-
-# Add master branch reference to fix Flutter's version checking
+# Clone and checkout the specific commit hash
+git clone https://github.com/superlistapp/flutter.git "$install_path"
 cd "$install_path"
-git remote set-branches --add origin master
-git fetch origin master:master --depth 1
+git checkout "$version"
 
-# Make the flutter binary executable if it exists
+# Make the flutter binary executable
 if [ -f "$install_path/bin/flutter" ]; then
   chmod +x "$install_path/bin/flutter"
 fi
-
-# Initialize Flutter to avoid first-run issues
-cd "$install_path"
-bin/flutter precache
 
 echo "Successfully installed superflutter@$version"
