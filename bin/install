@@ -19,12 +19,21 @@ echo "Installing superflutter@$version into $install_path"
 # Create install directory if needed (but don't overwrite)
 mkdir -p "$install_path"
 
-# Clone the repository with the specified branch or tag
-git clone --depth 1 --branch "$version" https://github.com/superlistapp/flutter.git "$install_path"
+# Clone the repository with the specified branch or tag, and fetch enough history
+git clone --branch "$version" https://github.com/superlistapp/flutter.git "$install_path"
+
+# Add master branch reference to fix Flutter's version checking
+cd "$install_path"
+git remote set-branches --add origin master
+git fetch origin master:master --depth 1
 
 # Make the flutter binary executable if it exists
 if [ -f "$install_path/bin/flutter" ]; then
   chmod +x "$install_path/bin/flutter"
 fi
+
+# Initialize Flutter to avoid first-run issues
+cd "$install_path"
+bin/flutter precache
 
 echo "Successfully installed superflutter@$version"
