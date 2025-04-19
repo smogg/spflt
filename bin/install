@@ -1,26 +1,39 @@
 #!/usr/bin/env bash
 set -e
 
-version="${1:-}"
-install_path="${2:-}"
+# Get the version and install path from arguments
+version="$1"
+install_path="$2"
 
-if [[ -z "$version" || -z "$install_path" ]]; then
-  echo "Missing version or install_path"
+# Validate required parameters
+if [ -z "$version" ]; then
+  echo "ERROR: Missing version parameter"
+  exit 1
+fi
+
+if [ -z "$install_path" ]; then
+  echo "ERROR: Missing install_path parameter"
   exit 1
 fi
 
 echo "Installing superflutter@$version into $install_path"
 
-# Try to clone with the specified branch or tag
-git clone --depth 1 --branch "$version" https://github.com/superlistapp/flutter.git "$install_path"
-clone_status=$?
+# Create install directory if needed
+mkdir -p "$install_path"
 
-if [ $clone_status -ne 0 ]; then
+# Clone the repository with the specified branch or tag
+git clone --depth 1 --branch "$version" https://github.com/superlistapp/flutter.git "$install_path"
+
+# Check if git clone succeeded
+if [ $? -ne 0 ]; then
   echo "Error: Version '$version' not found as a branch or tag"
+  rmdir "$install_path" 2>/dev/null || true
   exit 1
 fi
 
 # Make the flutter binary executable if it exists
-if [[ -f "$install_path/bin/flutter" ]]; then
+if [ -f "$install_path/bin/flutter" ]; then
   chmod +x "$install_path/bin/flutter"
 fi
+
+echo "Successfully installed superflutter@$version"

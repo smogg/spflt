@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 INSTALL_PATH="$1"
+
+# Set up the PATH environment variable to include the Flutter binary
 echo "PATH=$INSTALL_PATH/bin:$PATH"
+
+# Any other environment variables needed by Flutter/Superflutter

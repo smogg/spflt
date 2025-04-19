@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+echo "Debugging mise plugin"
+echo "Args: $@"
+echo "PWD: $PWD"
+echo "PLUGIN_ROOT: $PLUGIN_ROOT"
